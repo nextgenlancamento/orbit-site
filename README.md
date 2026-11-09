@@ -1,52 +1,33 @@
-# Campanha — backend PHP com integração Pix
+# Orbit — landing page e backend Pix
 
-Este pacote converte os trechos de backend enviados para PHP e remove dependências de Node.js/Vercel.
+O site público é uma landing page estática em `index.html`, pronta para deploy na Vercel. O backend Pix está em PHP e precisa ser hospedado em um serviço com PHP e PostgreSQL; a Vercel não executa esses arquivos PHP como funções nativas.
 
-## Estrutura
+## Deploy da landing page na Vercel
 
-- `api/`: endpoints HTTP em PHP.
-- `lib/`: integração Pix, persistência e inicialização.
-- `database/schema.sql`: tabela PostgreSQL.
-- `.env.example`: modelo de configuração.
+1. Importe `nextgenlancamento/orbit-site` na Vercel.
+2. Selecione a branch `main` e deixe o diretório raiz como `./`.
+3. Use o preset `Other` (ou deixe a Vercel detectar o site estático) e não configure comandos de build ou instalação.
+4. Faça um novo deploy. A página servida é `index.html`.
 
-## Requisitos
+O arquivo `.vercelignore` exclui `api/`, `lib/`, `database/` e arquivos PHP do deploy estático. Isso evita que código PHP seja publicado como texto e não altera os arquivos no GitHub.
 
-- PHP 8.1 ou superior
-- Extensões PHP `curl`, `json`, `pdo` e `pdo_pgsql`
-- PostgreSQL
-- Um provedor Pix com API HTTP
+## Backend PHP/Pix
 
-## Instalação
+Os endpoints PHP deste repositório não serão executados pela Vercel. Para usar cobranças Pix, hospede o backend em um provedor compatível com PHP 8.1+, cURL, PDO PostgreSQL e PostgreSQL. Configure o document root e as rotas para publicar somente os endpoints em `api/`; não exponha `.env`, `lib/` ou `database/` na web.
 
-1. Envie a pasta para uma hospedagem com PHP.
-2. Copie `.env.example` para `.env`.
-3. Preencha as credenciais reais no `.env` do servidor. Não envie esse arquivo ao Git nem ao frontend.
-4. Configure `DATABASE_URL`, `DATABASE_USER` e `DATABASE_PASSWORD`.
-5. Execute `database/schema.sql` no PostgreSQL.
-6. Configure o servidor para apontar para esta pasta e bloquear acesso público a `.env`, `lib/` e `database/`. O ideal é usar `public/` como document root e configurar as rotas para os arquivos de `api/`.
-7. Configure no painel do provedor o webhook para `POST /api/pix-webhook.php` e use o mesmo segredo em `PIX_WEBHOOK_SECRET`.
+Configure no ambiente do backend as variáveis de `.env.example`, incluindo `PIX_BASE_URL`, credenciais do provedor, `DATABASE_URL`, `DATABASE_USER`, `DATABASE_PASSWORD`, `PIX_WEBHOOK_SECRET` e `CAMPAIGN_FEE`. Não coloque credenciais no frontend ou nas variáveis públicas da Vercel.
 
-## Endpoints
+Endpoints do backend:
 
 - `GET /api/health.php`
 - `POST /api/create-charge.php`
 - `GET /api/pix-status.php?txid=IDENTIFICADOR`
 - `POST /api/pix-webhook.php`
 
-O corpo de `create-charge.php` aceita JSON com `participation_id`, `name`, `email`, `modality`, `pix_key`, `uf` e `answers`. O valor é definido exclusivamente no servidor por `CAMPAIGN_FEE`.
-
-## Importante sobre o provedor
-
-O adaptador mantém os caminhos e o formato genérico que estavam nos trechos originais (`/oauth/token`, `/v1/pix/charges` e `/v1/pix/charges/{id}`). Cada instituição pode exigir autenticação, campos, cabeçalhos, formato de valor e resposta diferentes. Portanto, **a integração só estará pronta para produção depois de adaptar e testar `lib/pix.php` com a documentação oficial do seu provedor**.
-
-O pacote não simula pagamentos nem marca cobranças como pagas por tempo decorrido. O status pago só é reconhecido após consulta ao provedor. O webhook também consulta o provedor; não confia apenas no conteúdo recebido.
-
-Use a campanha apenas com informações verdadeiras, preço/taxa claramente informados e sem sugerir vínculo ou endosso de uma marca sem autorização. Não prometa recompensa ou reembolso que não esteja efetivamente disponível e descrito em termos claros.
+A integração de pagamento só funcionará depois que o backend for hospedado, configurado com credenciais reais e adaptado/testado conforme a documentação do provedor Pix. O HTML atual é uma landing page institucional e ainda não contém um formulário de cobrança conectado a esses endpoints.
 
 ## Segurança
 
-- As credenciais que foram coladas na conversa devem ser consideradas expostas. Revogue-as/rotacione-as no painel do provedor antes de usar credenciais novas.
-- Nunca coloque credenciais Pix no JavaScript/frontend.
-- Use HTTPS.
-- Configure limites de requisição e proteção contra abuso na hospedagem.
-- Não exponha `phpinfo()` nem mensagens internas de erro.
+- Credenciais Pix anteriormente compartilhadas devem ser revogadas/rotacionadas antes do uso.
+- Use HTTPS e proteção contra abuso no host do backend.
+- Informe preços e condições de forma verdadeira e clara.
