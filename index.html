@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1020">
-<title>Orbit — Ideias que ganham movimento</title>
-<style>
-:root{--bg:#0b1020;--panel:#121a30;--muted:#a8b2ca;--text:#f5f7ff;--accent:#9b8cff;--cyan:#68e1df}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 12%,#5546a52b,transparent 30%),radial-gradient(circle at 5% 55%,#1d9a9a17,transparent 27%);z-index:-1}
-a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
-nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.5px;font-size:20px}.logo-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:grid;place-items:center;color:#10162a;font-weight:900}.navlinks{display:flex;gap:30px;color:var(--muted);font-size:14px}.navlinks a:hover{color:white}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border-radius:12px;background:linear-gradient(110deg,#a99aff,#6edbd7);color:#10162a;font-weight:800;border:0;cursor:pointer;transition:.2s;box-shadow:0 8px 30px #8d80ff25}.btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
-.hero{padding:92px 0 76px;display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:center}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid #a99aff55;border-radius:99px;color:#c9c1ff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 14px var(--cyan)}
-h1{font-size:clamp(42px,6vw,68px);line-height:1.04;letter-spacing:-.055em;margin:22px 0}.gradient{background:linear-gradient(100deg,#b6aaff,#6de5df);-webkit-background-clip:text;background-clip:text;color:transparent}.lead{font-size:18px;color:var(--muted);max-width:560px;margin:0 0 30px}.actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.ghost{padding:12px 18px;border:1px solid #ffffff2b;border-radius:12px;color:#d9def0;font-weight:700}.ghost:hover{background:#ffffff0c}
-.visual{min-height:390px;position:relative;display:grid;place-items:center}.orb{width:min(330px,75vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e5e0ff 0,#9d8bff 16%,#6556c9 38%,#20294c 68%,#11182d 75%);box-shadow:0 0 90px #8273ff4a,inset -22px -24px 50px #080d1d;position:relative;animation:float 6s ease-in-out infinite}.orb:after{content:"";position:absolute;inset:12%;border:1px solid #ffffff42;border-radius:50%;transform:rotate(-28deg) scaleX(1.45);box-shadow:0 0 30px #9b8cff22}.orbit{position:absolute;width:430px;height:160px;border:1px solid #a99aff70;border-radius:50%;transform:rotate(-24deg)}.orbit.two{transform:rotate(54deg);width:390px;height:130px;border-color:#68e1df55}.spark{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 25px var(--cyan);top:70px;right:60px}.float-card{position:absolute;right:0;bottom:32px;background:#17213a;border:1px solid #ffffff20;border-radius:16px;padding:15px 18px;box-shadow:0 20px 50px #0006;font-size:13px;color:var(--muted)}.float-card strong{display:block;color:white;font-size:20px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px 0 76px}.stat{border-top:1px solid #ffffff20;padding-top:18px}.stat strong{font-size:28px;letter-spacing:-1px}.stat span{display:block;color:var(--muted);font-size:13px}.section{padding:74px 0}.section-head{text-align:center;max-width:650px;margin:0 auto 38px}.section h2{font-size:clamp(30px,4vw,43px);line-height:1.1;letter-spacing:-.04em;margin:12px 0}.section-head p{color:var(--muted)}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:linear-gradient(145deg,#17213a,#10172a);border:1px solid #ffffff14;border-radius:20px;padding:25px;transition:.25s}.card:hover{transform:translateY(-5px);border-color:#a99aff66}.icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#a99aff20;color:#c5bbff;font-size:21px}.card h3{margin:18px 0 8px}.card p{color:var(--muted);font-size:14px;margin:0}
-.cta{margin:55px 0 85px;padding:48px;border-radius:25px;background:linear-gradient(120deg,#29244e,#163c49);border:1px solid #ffffff20;display:flex;align-items:center;justify-content:space-between;gap:25px}.cta h2{font-size:clamp(27px,4vw,40px);line-height:1.12;margin:0 0 10px}.cta p{color:#c4cbe0;margin:0}footer{border-top:1px solid #ffffff14;padding:26px 0;color:#8792ad;font-size:13px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:65px;gap:10px}.visual{min-height:340px}.orbit{width:340px}.cards{grid-template-columns:1fr}.stats{gap:10px}.stat strong{font-size:23px}.cta{display:block;padding:32px}.cta .btn{margin-top:22px}.navlinks{display:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101626">
+  <meta name="description" content="Projeto Campanha: documentação e status da API de integração Pix.">
+  <title>Campanha — API Pix</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#131d33;--text:#f5f7ff;--muted:#a8b2ca;--accent:#9b8cff;--cyan:#68e1df;--line:#ffffff20}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 82% 0%,#5546a533,transparent 35%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit}.wrap{width:min(1080px,calc(100% - 40px));margin:auto}header{border-bottom:1px solid var(--line)}nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;font-size:19px;text-decoration:none;letter-spacing:-.4px}.brand b{color:var(--cyan)}nav a:last-child{color:#d8d1ff;text-decoration:none;font-size:14px}
+    .hero{padding:90px 0 62px;max-width:780px}.tag{display:inline-block;padding:6px 12px;border:1px solid #9b8cff77;border-radius:99px;color:#d0c8ff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}h1{font-size:clamp(40px,7vw,68px);line-height:1.04;letter-spacing:-.055em;margin:22px 0}.shine{background:linear-gradient(100deg,#b6aaff,var(--cyan));background-clip:text;-webkit-background-clip:text;color:transparent}.intro{font-size:18px;color:var(--muted);max-width:690px;margin:0}
+    .notice{margin:12px 0 48px;padding:19px 21px;border:1px solid #f3c96966;background:#f3c96912;border-radius:15px;color:#f5e4b7}.notice strong{color:#fff0c8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 70px}.card{padding:23px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#17213a,#10172a)}.card h2{font-size:19px;margin:0 0 7px}.card p{margin:0;color:var(--muted);font-size:14px}.code{display:block;margin-top:12px;padding:10px 12px;background:#090e1b;border:1px solid #ffffff12;border-radius:9px;color:#b8eff0;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}.steps{padding:0 0 70px}.steps h2{font-size:28px;letter-spacing:-.03em}.steps p{color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0;color:#8792ad;font-size:13px}
+    @media(max-width:650px){.hero{padding:65px 0 42px}.grid{grid-template-columns:1fr}.wrap{width:min(100% - 32px,1080px)}nav{height:68px}}
+  </style>
 </head>
 <body>
-<header class="wrap"><nav><a class="logo" href="#"><span class="logo-mark">O</span> orbit<span class="gradient">.</span></a><div class="navlinks"><a href="#sobre">Sobre</a><a href="#solucoes">Soluções</a><a href="#contato">Contato</a></div><a class="btn" href="#contato">Começar agora ↗</a></nav></header>
-<main>
-<section class="hero wrap"><div><span class="eyebrow"><i class="dot"></i> Ideias em movimento</span><h1>Transforme boas ideias em <span class="gradient">grandes possibilidades.</span></h1><p class="lead">Um espaço para tirar projetos do papel, organizar seus próximos passos e construir algo extraordinário — no seu ritmo.</p><div class="actions"><a class="btn" href="#solucoes">Explorar possibilidades ↗</a><a class="ghost" href="#sobre">Conhecer a Orbit</a></div></div><div class="visual" aria-label="Ilustração abstrata de um planeta brilhante"><div class="orbit"></div><div class="orbit two"></div><div class="orb"></div><div class="spark"></div><div class="float-card">Seu próximo projeto<strong>começa aqui.</strong></div></div></section>
-<section class="wrap stats" id="sobre"><div class="stat"><strong>01</strong><span>Uma ideia clara para começar</span></div><div class="stat"><strong>02</strong><span>Um plano simples para avançar</span></div><div class="stat"><strong>∞</strong><span>Possibilidades para explorar</span></div></section>
-<section class="section wrap" id="solucoes"><div class="section-head"><span class="eyebrow">O que você encontra</span><h2>Menos complicação.<br><span class="gradient">Mais movimento.</span></h2><p>Ferramentas e inspiração para transformar intenção em ação.</p></div><div class="cards"><article class="card"><div class="icon">✦</div><h3>Clareza</h3><p>Organize pensamentos, defina prioridades e entenda qual é o próximo passo mais importante.</p></article><article class="card"><div class="icon">⌁</div><h3>Estratégia</h3><p>Divida objetivos grandes em etapas menores, práticas e possíveis de acompanhar.</p></article><article class="card"><div class="icon">↗</div><h3>Progresso</h3><p>Acompanhe sua evolução, aprenda com o caminho e continue avançando com consistência.</p></article></div></section>
-<section class="wrap" id="contato"><div class="cta"><div><h2>O próximo passo pode começar hoje.</h2><p>Escolha uma ideia. Dê o primeiro movimento.</p></div><a class="btn" href="mailto:oi@orbit.exemplo?subject=Quero%20conhecer%20a%20Orbit">Fale com a gente ↗</a></div></section>
-</main>
-<footer class="wrap"><span>© 2026 Orbit. Feito para tirar ideias do papel.</span><span>Feito com intenção ✦</span></footer>
+  <header><nav class="wrap"><a class="brand" href="#inicio">Campanha <b>·</b> Pix</a><a href="#endpoints">Documentação da API ↓</a></nav></header>
+  <main class="wrap">
+    <section class="hero" id="inicio">
+      <span class="tag">Projeto de integração Pix</span>
+      <h1>Uma base para conectar sua campanha a um <span class="shine">provedor Pix.</span></h1>
+      <p class="intro">Este repositório contém uma API em PHP para criar cobranças, consultar pagamentos e receber notificações. Esta página apresenta o projeto; ela não processa pagamentos.</p>
+    </section>
+    <div class="notice"><strong>Pagamentos ainda não estão habilitados neste site.</strong> A API exige hospedagem com PHP e PostgreSQL, configuração segura das credenciais e adaptação ao provedor Pix escolhido. A Vercel não executa estes arquivos PHP como backend.</div>
+    <section class="grid" id="endpoints" aria-label="Endpoints incluídos">
+      <article class="card"><h2>Verificação de saúde</h2><p>Informa se o backend PHP e as configurações necessárias estão disponíveis.</p><span class="code">GET /api/health.php</span></article>
+      <article class="card"><h2>Criar cobrança</h2><p>Recebe os dados da participação e solicita uma cobrança ao provedor configurado.</p><span class="code">POST /api/create-charge.php</span></article>
+      <article class="card"><h2>Consultar pagamento</h2><p>Consulta o status da cobrança pelo identificador da transação.</p><span class="code">GET /api/pix-status.php?txid=IDENTIFICADOR</span></article>
+      <article class="card"><h2>Notificação do provedor</h2><p>Recebe o webhook e confirma o estado consultando o provedor Pix.</p><span class="code">POST /api/pix-webhook.php</span></article>
+    </section>
+    <section class="steps">
+      <h2>Para colocar a API em funcionamento</h2>
+      <p>Hospede o backend em um servidor com PHP 8.1+, cURL, PDO PostgreSQL e banco PostgreSQL. Configure as variáveis de ambiente no servidor, execute o schema SQL e ajuste os caminhos e formatos conforme a documentação oficial do seu provedor. Nunca exponha credenciais no frontend ou no repositório.</p>
+      <p>O código genérico deste projeto não deve ser considerado uma integração Pix pronta para produção até ser configurado e testado com o provedor real.</p>
+    </section>
+  </main>
+  <footer><div class="wrap">Projeto Campanha — API Pix · Integração sujeita à configuração do provedor e da hospedagem.</div></footer>
 </body>
 </html>
