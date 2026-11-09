@@ -1,41 +1,722 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101626">
-  <meta name="description" content="Projeto Campanha: documentação e status da API de integração Pix.">
-  <title>Campanha — API Pix</title>
-  <style>
-    :root{color-scheme:dark;--bg:#0b1020;--panel:#131d33;--text:#f5f7ff;--muted:#a8b2ca;--accent:#9b8cff;--cyan:#68e1df;--line:#ffffff20}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 82% 0%,#5546a533,transparent 35%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    a{color:inherit}.wrap{width:min(1080px,calc(100% - 40px));margin:auto}header{border-bottom:1px solid var(--line)}nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;font-size:19px;text-decoration:none;letter-spacing:-.4px}.brand b{color:var(--cyan)}nav a:last-child{color:#d8d1ff;text-decoration:none;font-size:14px}
-    .hero{padding:90px 0 62px;max-width:780px}.tag{display:inline-block;padding:6px 12px;border:1px solid #9b8cff77;border-radius:99px;color:#d0c8ff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}h1{font-size:clamp(40px,7vw,68px);line-height:1.04;letter-spacing:-.055em;margin:22px 0}.shine{background:linear-gradient(100deg,#b6aaff,var(--cyan));background-clip:text;-webkit-background-clip:text;color:transparent}.intro{font-size:18px;color:var(--muted);max-width:690px;margin:0}
-    .notice{margin:12px 0 48px;padding:19px 21px;border:1px solid #f3c96966;background:#f3c96912;border-radius:15px;color:#f5e4b7}.notice strong{color:#fff0c8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 70px}.card{padding:23px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#17213a,#10172a)}.card h2{font-size:19px;margin:0 0 7px}.card p{margin:0;color:var(--muted);font-size:14px}.code{display:block;margin-top:12px;padding:10px 12px;background:#090e1b;border:1px solid #ffffff12;border-radius:9px;color:#b8eff0;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}.steps{padding:0 0 70px}.steps h2{font-size:28px;letter-spacing:-.03em}.steps p{color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0;color:#8792ad;font-size:13px}
-    @media(max-width:650px){.hero{padding:65px 0 42px}.grid{grid-template-columns:1fr}.wrap{width:min(100% - 32px,1080px)}nav{height:68px}}
-  </style>
-</head>
-<body>
-  <header><nav class="wrap"><a class="brand" href="#inicio">Campanha <b>·</b> Pix</a><a href="#endpoints">Documentação da API ↓</a></nav></header>
-  <main class="wrap">
-    <section class="hero" id="inicio">
-      <span class="tag">Projeto de integração Pix</span>
-      <h1>Uma base para conectar sua campanha a um <span class="shine">provedor Pix.</span></h1>
-      <p class="intro">Este repositório contém uma API em PHP para criar cobranças, consultar pagamentos e receber notificações. Esta página apresenta o projeto; ela não processa pagamentos.</p>
-    </section>
-    <div class="notice"><strong>Pagamentos ainda não estão habilitados neste site.</strong> A API exige hospedagem com PHP e PostgreSQL, configuração segura das credenciais e adaptação ao provedor Pix escolhido. A Vercel não executa estes arquivos PHP como backend.</div>
-    <section class="grid" id="endpoints" aria-label="Endpoints incluídos">
-      <article class="card"><h2>Verificação de saúde</h2><p>Informa se o backend PHP e as configurações necessárias estão disponíveis.</p><span class="code">GET /api/health.php</span></article>
-      <article class="card"><h2>Criar cobrança</h2><p>Recebe os dados da participação e solicita uma cobrança ao provedor configurado.</p><span class="code">POST /api/create-charge.php</span></article>
-      <article class="card"><h2>Consultar pagamento</h2><p>Consulta o status da cobrança pelo identificador da transação.</p><span class="code">GET /api/pix-status.php?txid=IDENTIFICADOR</span></article>
-      <article class="card"><h2>Notificação do provedor</h2><p>Recebe o webhook e confirma o estado consultando o provedor Pix.</p><span class="code">POST /api/pix-webhook.php</span></article>
-    </section>
-    <section class="steps">
-      <h2>Para colocar a API em funcionamento</h2>
-      <p>Hospede o backend em um servidor com PHP 8.1+, cURL, PDO PostgreSQL e banco PostgreSQL. Configure as variáveis de ambiente no servidor, execute o schema SQL e ajuste os caminhos e formatos conforme a documentação oficial do seu provedor. Nunca exponha credenciais no frontend ou no repositório.</p>
-      <p>O código genérico deste projeto não deve ser considerado uma integração Pix pronta para produção até ser configurado e testado com o provedor real.</p>
-    </section>
-  </main>
-  <footer><div class="wrap">Projeto Campanha — API Pix · Integração sujeita à configuração do provedor e da hospedagem.</div></footer>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1220" />
+    <meta
+      name="description"
+      content="Orbit — landing page responsiva com foco em estratégia, conteúdo e performance para ideias que ganham movimento."
+    />
+    <title>Orbit | Ideias que ganham movimento</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --bg-alt: #111a2f;
+        --panel: rgba(15, 23, 42, 0.8);
+        --panel-strong: #121d35;
+        --text: #edf4ff;
+        --muted: #b7c6e5;
+        --primary: #6ee7c8;
+        --secondary: #9f86ff;
+        --accent: #7dd3fc;
+        --line: rgba(255, 255, 255, 0.08);
+        --shadow: 0 25px 60px rgba(13, 22, 42, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(159, 134, 255, 0.22), transparent 22%),
+          radial-gradient(circle at top right, rgba(110, 231, 200, 0.14), transparent 22%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      img { max-width: 100%; display: block; }
+      a { color: inherit; text-decoration: none; }
+
+      .container {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        background: rgba(11, 16, 32, 0.7);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        box-shadow: 0 0 18px rgba(110, 231, 200, 0.8);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .nav-links a:hover { color: var(--text); }
+
+      .button,
+      .button-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button {
+        color: #09111d;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        box-shadow: 0 15px 30px rgba(110, 231, 200, 0.26);
+      }
+
+      .button-secondary {
+        border: 1px solid var(--line);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .button:hover,
+      .button-secondary:hover {
+        transform: translateY(-1px);
+      }
+
+      main {
+        overflow: hidden;
+      }
+
+      .hero {
+        padding: 88px 0 48px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: center;
+        gap: 42px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(159, 134, 255, 0.12);
+        border: 1px solid rgba(159, 134, 255, 0.28);
+        color: #d8ceff;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 22px 0 20px;
+        font-size: clamp(2.8rem, 5vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .lead {
+        max-width: 580px;
+        margin: 0 0 30px;
+        color: var(--muted);
+        font-size: 1.12rem;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 42px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        max-width: 620px;
+      }
+
+      .stat {
+        padding: 18px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid var(--line);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.7rem;
+        letter-spacing: -0.05em;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .hero-visual {
+        position: relative;
+      }
+
+      .card-visual {
+        position: relative;
+        background: linear-gradient(180deg, rgba(18,29,53,0.96), rgba(10,16,27,0.96));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .mini-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .mini-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .dots {
+        display: flex;
+        gap: 7px;
+      }
+
+      .dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .dots span:nth-child(1) { background: #ff6b6b; }
+      .dots span:nth-child(2) { background: #ffd166; }
+      .dots span:nth-child(3) { background: #6ee7c8; }
+
+      .mini-graph {
+        display: grid;
+        gap: 12px;
+      }
+
+      .bars {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 10px;
+        height: 120px;
+        padding-top: 20px;
+      }
+
+      .bars span {
+        display: block;
+        width: 20%;
+        border-radius: 999px 999px 0 0;
+        background: linear-gradient(180deg, var(--accent), var(--secondary));
+        box-shadow: 0 12px 24px rgba(125, 211, 252, 0.2);
+      }
+
+      .bars span:nth-child(1) { height: 35%; }
+      .bars span:nth-child(2) { height: 52%; }
+      .bars span:nth-child(3) { height: 78%; }
+      .bars span:nth-child(4) { height: 96%; }
+      .bars span:nth-child(5) { height: 88%; }
+
+      .floating-badge {
+        position: absolute;
+        right: -18px;
+        bottom: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 180px;
+        padding: 16px 18px;
+        border-radius: 20px;
+        background: rgba(9, 17, 29, 0.9);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .floating-badge strong {
+        font-size: 1.5rem;
+        letter-spacing: -0.05em;
+      }
+
+      .section {
+        padding: 32px 0 18px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 26px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .section-head p {
+        max-width: 540px;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature {
+        padding: 24px 22px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+      }
+
+      .icon {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        font-size: 1.4rem;
+        border-radius: 16px;
+        margin-bottom: 18px;
+        background: linear-gradient(135deg, rgba(110,231,200,0.18), rgba(159,134,255,0.18));
+        border: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .feature h3 {
+        margin: 0 0 12px;
+        font-size: 1.35rem;
+      }
+
+      .feature p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .step {
+        position: relative;
+        padding: 22px 20px 20px;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.02);
+      }
+
+      .step-number {
+        display: inline-grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #09111d;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+
+      .step h3 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .testimonial-wrap {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      .quote {
+        padding: 26px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+      }
+
+      .quote p {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        line-height: 1.4;
+        letter-spacing: -0.03em;
+      }
+
+      .author {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #09111d;
+        font-weight: 800;
+      }
+
+      .author strong { display: block; }
+      .author span { color: var(--muted); }
+
+      .cta-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 24px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(110,231,200,0.1), rgba(159,134,255,0.12));
+        border: 1px solid var(--line);
+      }
+
+      .cta-box h3 {
+        margin: 0 0 10px;
+        font-size: 1.7rem;
+      }
+
+      .cta-box p {
+        margin: 0 0 22px;
+        color: var(--muted);
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        margin-top: 40px;
+      }
+
+      .footer-inner {
+        min-height: 92px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 940px) {
+        .hero-inner,
+        .testimonial-wrap,
+        .features,
+        .process {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-visual {
+          max-width: 560px;
+          width: 100%;
+          margin: 0 auto;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .nav {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 16px 0;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .features,
+        .process,
+        .stats,
+        .testimonial-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .footer-inner {
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          padding: 18px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="Orbit home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          Orbit
+        </a>
+
+        <nav class="nav-links" aria-label="Navegação principal">
+          <a href="#solucoes">Soluções</a>
+          <a href="#processo">Processo</a>
+          <a href="#resultados">Resultados</a>
+          <a href="#contato">Contato</a>
+        </nav>
+
+        <a class="button-secondary" href="#contato">Agendar conversa</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <span class="eyebrow">Estratégia · Conteúdo · Performance</span>
+            <h1>
+              Ideias que <span class="gradient-text">ganham movimento.</span>
+            </h1>
+            <p class="lead">
+              A Orbit ajuda marcas a transformar atenção em ação com estratégias inteligentes,
+              conteúdo que conversa com a audiência e campanhas que entregam resultados reais.
+            </p>
+
+            <div class="cta-row">
+              <a class="button" href="#contato">Falar com a Orbit</a>
+              <a class="button-secondary" href="#solucoes">Ver soluções</a>
+            </div>
+
+            <div class="stats" id="resultados">
+              <div class="stat">
+                <strong>+184%</strong>
+                <span>engajamento em campanhas</span>
+              </div>
+              <div class="stat">
+                <strong>3,2x</strong>
+                <span>mais leads qualificados</span>
+              </div>
+              <div class="stat">
+                <strong>12 semanas</strong>
+                <span>de crescimento consistente</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-label="Dashboard da Orbit">
+            <div class="card-visual">
+              <div class="mini-panel">
+                <div class="mini-header">
+                  <strong>Performance</strong>
+                  <div class="dots" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+
+                <div class="mini-graph">
+                  <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:0.86rem;">
+                    <span>Jan</span>
+                    <span>Fev</span>
+                    <span>Mar</span>
+                    <span>Abr</span>
+                    <span>Mai</span>
+                  </div>
+                  <div class="bars" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="floating-badge">
+              <span style="color: var(--muted); font-size: 0.77rem; text-transform: uppercase; letter-spacing: 0.08em;">Foco</span>
+              <strong>+67%</strong>
+              <span style="color: var(--muted); font-size: 0.86rem;">na geração de ação</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="solucoes">
+        <div class="container">
+          <div class="section-head">
+            <h2>O que a Orbit faz</h2>
+            <p>
+              Combinamos estratégia de marca, criação de conteúdo e execução digital para
+              transformar boa ideia em movimento contínuo.
+            </p>
+          </div>
+
+          <div class="features">
+            <article class="feature">
+              <div class="icon" aria-hidden="true">✦</div>
+              <h3>Brand Strategy</h3>
+              <p>
+                Posicionamento claro, narrativa forte e mensagens que conectam com o público certo.
+              </p>
+            </article>
+
+            <article class="feature">
+              <div class="icon" aria-hidden="true">◎</div>
+              <h3>Conteúdo que converte</h3>
+              <p>
+                Stories, landing pages, anúncios e peças criativas pensadas para gerar interesse e ação.
+              </p>
+            </article>
+
+            <article class="feature">
+              <div class="icon" aria-hidden="true">↗</div>
+              <h3>Growth Digital</h3>
+              <p>
+                Acompanhamento de performance com otimização contínua da jornada e das conversões.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="processo">
+        <div class="container">
+          <div class="section-head">
+            <h2>Como trabalhamos</h2>
+            <p>
+              Um processo simples e eficiente para levar sua marca do planejamento para a execução.
+            </p>
+          </div>
+
+          <div class="process">
+            <article class="step">
+              <div class="step-number">1</div>
+              <h3>Diagnóstico</h3>
+              <p>Entendemos objetivos, público e oportunidades reais de crescimento.</p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">2</div>
+              <h3>Estratégia</h3>
+              <p>Definimos a narrativa, o posicionamento e os pilares de comunicação.</p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">3</div>
+              <h3>Execução</h3>
+              <p>Desenvolvemos campanhas, criativos e conteúdos para elevar a presença da marca.</p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">4</div>
+              <h3>Ajuste</h3>
+              <p>Medimos resultados, aprendemos com os dados e refinamos a ação.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container testimonial-wrap">
+          <div class="quote">
+            <p>
+              “A Orbit não apenas pensou a estratégia, ela ajudou a transformar a nossa mensagem
+              em uma presença mais forte, clara e com impacto real no mercado.”
+            </p>
+
+            <div class="author">
+              <div class="avatar" aria-hidden="true">AL</div>
+              <div>
+                <strong>Ana Lima</strong>
+                <span>Diretora de Marketing</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="cta-box" id="contato">
+            <h3>Pronto para ganhar movimento?</h3>
+            <p>
+              Vamos entender seu cenário e criar uma estratégia que transforme atenção em ação.
+            </p>
+            <a class="button" href="mailto:contato@orbit.com.br">contato@orbit.com.br</a>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <div class="brand" aria-label="Orbit marca">
+          <span class="brand-mark" aria-hidden="true"></span>
+          Orbit
+        </div>
+        <span>Ideias que ganham movimento.</span>
+      </div>
+    </footer>
+  </body>
 </html>
